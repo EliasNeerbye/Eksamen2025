@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
         });
     }
     if (!validator.isEmail(email)) {
+        console.error(`Ugyldig e-postadresse: ${email}`);
         return res.status(400).json({
             success: false,
             message: "Ugyldig e-postadresse.",
