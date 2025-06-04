@@ -45,7 +45,7 @@
 
 ## Hent bruker
 
-**GET** `/api/:username`
+**GET** `/api/username`
 
 ### URL Parameters
 

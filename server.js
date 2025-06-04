@@ -30,6 +30,23 @@ app.use(cors(corsOptions));
 const userRoutes = require("./routes/userRoutes");
 app.use("/api", userRoutes);
 
+app.use("*", (req, res) => {
+    return res.status(404).json({
+        success: false,
+        message: "Ressurs ikke funnet.",
+        data: null,
+    });
+});
+
+app.use((err, req, res, next) => {
+    console.error("Server error:", err);
+    return res.status(500).json({
+        success: false,
+        message: "Intern serverfeil.",
+        data: null,
+    });
+});
+
 app.listen(config.port, () => {
     console.log("Server is running on port 3000");
 });
