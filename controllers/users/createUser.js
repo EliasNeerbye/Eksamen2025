@@ -3,19 +3,28 @@ const validator = require("validator");
 
 module.exports = async (req, res) => {
     const { brukernavn, email } = req.body;
-
     if (!brukernavn || brukernavn == "" || brukernavn.length < 1) {
         console.error(`Brukernavn er påkrevd. Fikk: ${brukernavn}`);
-        return res.status(400).json({ error: "Brukernavn er påkrevd." });
+        return res.status(400).json({
+            success: false,
+            message: "Brukernavn er påkrevd.",
+            data: null,
+        });
     }
-
     if (!email || email == "" || email.length < 5) {
         console.error(`E-postadresse er påkrevd. Fikk: ${email}`);
-        return res.status(400).json({ error: "E-postadresse er påkrevd." });
+        return res.status(400).json({
+            success: false,
+            message: "E-postadresse er påkrevd.",
+            data: null,
+        });
     }
-
     if (!validator.isEmail(email)) {
-        return res.status(400).json({ error: "Ugyldig e-postadresse." });
+        return res.status(400).json({
+            success: false,
+            message: "Ugyldig e-postadresse.",
+            data: null,
+        });
     }
 
     try {
@@ -24,17 +33,20 @@ module.exports = async (req, res) => {
         });
         if (isUser) {
             console.error(`Bruker allerede eksisterer: ${brukernavn}`);
-            return res
-                .status(400)
-                .json({ error: "Bruker eksisterer allerede." });
+            return res.status(400).json({
+                success: false,
+                message: "Bruker eksisterer allerede.",
+                data: null,
+            });
         }
     } catch (error) {
         console.error("Feil ved sjekk av eksisterende bruker:", error);
-        return res
-            .status(500)
-            .json({
-                error: "Intern serverfeil. Kunne ikke sjekke om bruker allerede eksisterer.",
-            });
+        return res.status(500).json({
+            success: false,
+            message:
+                "Intern serverfeil. Kunne ikke sjekke om bruker allerede eksisterer.",
+            data: null,
+        });
     }
 
     try {
@@ -42,16 +54,19 @@ module.exports = async (req, res) => {
             brukernavn: brukernavn,
             email: email,
         });
-
         await newUser.save();
         console.log(`Bruker opprettet: ${newUser}`);
-        return res
-            .status(201)
-            .json({ message: "Bruker opprettet", user: newUser });
+        return res.status(201).json({
+            success: true,
+            message: "Bruker opprettet",
+            data: { user: newUser },
+        });
     } catch (error) {
         console.error("Feil ved oppretting av bruker:", error);
-        return res
-            .status(500)
-            .json({ error: "Intern serverfeil. Kunne ikke opprette bruker." });
+        return res.status(500).json({
+            success: false,
+            message: "Intern serverfeil. Kunne ikke opprette bruker.",
+            data: null,
+        });
     }
 };
