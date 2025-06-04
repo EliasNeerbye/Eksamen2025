@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const helmet = require("helmet");
 const config = require("./utils/config");
 
 const app = express();
@@ -15,6 +17,15 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(helmet());
+
+const corsOptions = {
+    origin: config.corsOrigins,
+    methdos: ["GET", "POST"],
+};
+
+app.use(cors(corsOptions));
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api", userRoutes);
