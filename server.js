@@ -22,7 +22,7 @@ app.use(helmet());
 
 const corsOptions = {
     origin: config.corsOrigins,
-    methdos: ["GET", "POST"],
+    methods: ["GET", "POST"],
 };
 
 app.use(cors(corsOptions));
