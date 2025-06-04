@@ -29,7 +29,7 @@ app.use(cors(corsOptions));
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/api", userRoutes);
-app.use("/*", (req, res) => {
+app.use("/", (req, res) => {
     return res.status(404).json({
         success: false,
         message: "Ressurs ikke funnet.",
