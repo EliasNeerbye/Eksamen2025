@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Pull latest changes
+      run: |
+        cd /home/harpyadmin/Eksamen2025
+        git pull
+        
+    - name: Install dependencies
+      run: |
+        cd /home/harpyadmin/Eksamen2025
+        npm i
+        
+    - name: Restart PM2 processes
+      run: |
+        cd /home/harpyadmin/Eksamen2025
+        pm2 restart all
